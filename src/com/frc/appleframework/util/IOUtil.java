@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 
 public class IOUtil {
     public static InputStream getResourceAsStream(final String name) {
@@ -15,7 +16,15 @@ public class IOUtil {
         return getResourceAsStream(name, cl);
     }
     private static InputStream getResourceAsStream(final String name, final ClassLoader classloader) {
-        return classloader.getResourceAsStream(name);
+    	URL url = classloader.getResource(name);
+    	try {
+			return url.openStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
+//        return classloader.getResourceAsStream(name);
     }
     public static byte[] readBytesFromClasspath(final String name) {
         InputStream input = null;
@@ -95,7 +104,7 @@ public class IOUtil {
             File file = new File(filePath);
             if (file.isFile() && file.exists()) { // 判断文件是否存在
                 InputStreamReader read = new InputStreamReader(
-                        new FileInputStream(file), encoding);// 考虑到编码格�?
+                        new FileInputStream(file), encoding);// 考虑到编码格�?
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while ((lineTxt = bufferedReader.readLine()) != null) {

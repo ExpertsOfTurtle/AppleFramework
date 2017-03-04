@@ -13,6 +13,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,31 +23,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.frc.appleframework.beans.AppleRequest;
 import com.frc.appleframework.beans.IRequest;
 import com.frc.appleframework.exception.AppleException;
 import com.frc.appleframework.hanlders.AbstractHandler;
 import com.frc.appleframework.util.IOUtil;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/main")
 public class MainController {
-	
+	private static Logger logger  =  LoggerFactory.getLogger(MainController.class);
 	private static final String DEFAULT_ERROR_VM = "error.vm";
 
 	@Autowired
 	private BeanFactory beanfactory;
 
-	@RequestMapping(value = "/{requestType}")
-	public @ResponseBody Object test(@PathVariable String requestType, @RequestBody Object reqObject,
+	@RequestMapping(value = "/{domain}/{requestType}")
+	public @ResponseBody Object test(
+			@PathVariable String requestType,
+			@PathVariable String domain,
+			@RequestBody Object reqObject,
 			HttpServletRequest request) {
 
+		logger.info("domain={}, requestType={}", domain, requestType);
+		
 		// Using {requestType} from the url to identify different kind of
 		// request
-		String confName = requestType + ".json";
+		String confName = "requesttype" + "/" + domain + "/" + requestType + ".json";
 		byte[] bytes = IOUtil.readBytesFromClasspath(confName);
 		String configString = new String(bytes);
 		JSONObject json = JSONObject.fromObject(configString);
@@ -61,6 +66,7 @@ public class MainController {
 		try {
 			cl = Class.forName(requestBeanType);
 		} catch (ClassNotFoundException e) {
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
 		IRequest apple = (IRequest) JSONObject.toBean(JSONObject.fromObject(reqObject), cl);
@@ -72,6 +78,9 @@ public class MainController {
 				AbstractHandler handler = (AbstractHandler) beanfactory.getBean(handlerName);
 				handler.process(apple);	
 			} catch (AppleException e) {
+				logger.error("Handler exception with errorCode={}, errorMessage={}", 
+						e.getErrorCode(), e.getErrorMessage());
+				
 				String errorVm = json.getString("error");
 				if (errorVm == null || errorVm.trim().length() == 0) {
 					errorVm = DEFAULT_ERROR_VM;
@@ -86,6 +95,7 @@ public class MainController {
 	}
 	
 	protected String gotoPage(String vmName) {
+		logger.info("got to page:" + vmName);
 		VelocityContext ctx = new VelocityContext();
 		Map<String, Object> requestData = (Map<String, Object>) AbstractHandler.getRequestData();
 		for (Entry<String, Object> entry : requestData.entrySet()) {
@@ -107,6 +117,7 @@ public class MainController {
 		return sw.toString();
 	}
 	protected String gotoErrorPage(String vmName, String errorCode, String errorMessage) {
+		logger.info("got to error page:" + vmName);
 		VelocityContext ctx = new VelocityContext();
 		Map<String, Object> requestData = (Map<String, Object>) AbstractHandler.getRequestData();
 		for (Entry<String, Object> entry : requestData.entrySet()) {
