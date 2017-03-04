@@ -5,5 +5,5 @@
 		"AnotherHandler"
 	],
 	"response" : "rsp.vm",
-	"error" : "error.vm"
+	"error" : "vm/error.vm"
 }

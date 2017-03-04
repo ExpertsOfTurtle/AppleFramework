@@ -86,7 +86,16 @@ public class MainController {
 					errorVm = DEFAULT_ERROR_VM;
 				}
 				return gotoErrorPage(errorVm, e.getErrorCode(), e.getErrorMessage());
-			}			
+			} catch (Exception e) {
+				logger.error("Generic exception: errorMessage={}", 
+						e.getMessage());
+				
+				String errorVm = json.getString("error");
+				if (errorVm == null || errorVm.trim().length() == 0) {
+					errorVm = DEFAULT_ERROR_VM;
+				}
+				return gotoErrorPage(errorVm, "E00000", e.getMessage());
+			}					
 		}
 
 		String vm = json.getString("response");
@@ -109,7 +118,7 @@ public class MainController {
 		ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		ve.init();
 
-		Template t = ve.getTemplate("vm/" + vmName);
+		Template t = ve.getTemplate(vmName);
 
 		StringWriter sw = new StringWriter();
 		t.merge(ctx, sw);
@@ -133,7 +142,7 @@ public class MainController {
 		ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 		ve.init();
 
-		Template t = ve.getTemplate("vm/" + vmName);
+		Template t = ve.getTemplate(vmName);
 
 		StringWriter sw = new StringWriter();
 		t.merge(ctx, sw);

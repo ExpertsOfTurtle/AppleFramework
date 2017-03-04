@@ -12,6 +12,8 @@
           	http://www.springframework.org/schema/context/spring-context.xsd"
 	default-lazy-init="false">
 	
+	<import resource="classpath:MyBatisConf.xml"></import>
+	
 	<context:component-scan base-package="com.frc.appleframework" />
 	
 </beans>

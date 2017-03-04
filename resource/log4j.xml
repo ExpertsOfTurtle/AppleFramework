@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://toolkit.alibaba-inc.com/dtd/log4j/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- ===================================================================== -->
+	<!-- 以下是appender的定义，定义日志输出的目的地、输出方式及过滤级别 -->
+	<!-- ===================================================================== -->
+	<appender name="root-log" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="/logs/root.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="sample-log" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="/logs/sample.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="appleFrameworkFile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="/logs/appleFramework.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="chooseOptionFile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="/logs/chooseOption.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="sample-log-console" class="org.apache.log4j.ConsoleAppender">
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
+		</layout>
+	</appender>
+	<!-- 过滤出我们想要的日志信息，实现按照日志等级把日志输出到不同地方的目的 -->
+	<appender name="special-log" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="/logs/error.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="GBK" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %l - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+
+	<!-- ===================================================================== -->
+	<!-- 日志写出器：每一个logger可以有多个输出目的地和输出方式 -->
+	<!-- ===================================================================== -->
+	<logger name="study.log4j.sample" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="sample-log" />
+		<appender-ref ref="sample-log-console" />
+	</logger>
+
+	<logger name="special-logger" additivity="false">
+		<appender-ref ref="special-log" />
+	</logger>
+
+	<!-- ===================================================================== -->
+	<!-- Root logger 所有logger的基类，没有定义的logger将会使用root logger -->
+	<!-- ===================================================================== -->
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="sample-log-console" />
+		<appender-ref ref="root-log" />
+	</root>
+
+	<!--通过<category></category>的定义可以将各个包中的类日志输出到不同的日志文件中 -->
+	<category name="com.frc.appleframework" additivity="true">
+		<level value="INFO" />
+		<appender-ref ref="appleFrameworkFile" />
+	</category>
+	<category name="com.frc.chooseoption" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="chooseOptionFile" />
+	</category>
+	
+	<!-- Third party libary -->
+	<category name="org.springframework" additivity="true">
+		<level value="INFO" />
+		<appender-ref ref="root-log" />
+	</category>
+	<category name="org.apache.commons" additivity="true">
+		<level value="INFO" />
+		<appender-ref ref="root-log" />
+	</category>
+	<category name="org.mybatis.spring" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="root-log" />
+	</category>
+	<category name="org.apache.ibatis" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="root-log" />
+	</category>
+	
+</log4j:configuration>
