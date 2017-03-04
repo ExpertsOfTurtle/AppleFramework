@@ -1,0 +1,9 @@
+{
+	"requestBeanType" : "com.frc.appleframework.beans.AppleRequest",
+	"handlers" : [
+		"TestHandler",
+		"AnotherHandler"
+	],
+	"response" : "rsp.vm",
+	"error" : "error.vm"
+}
