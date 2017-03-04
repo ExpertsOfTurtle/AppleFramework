@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
@@ -39,7 +40,7 @@ public class MainController {
 	@Autowired
 	private BeanFactory beanfactory;
 
-	@RequestMapping(value = "/{domain}/{requestType}")
+	@RequestMapping(value = "/{domain}/{requestType}", produces = "application/json; charset=utf-8")
 	public @ResponseBody Object test(
 			@PathVariable String requestType,
 			@PathVariable String domain,
@@ -116,6 +117,9 @@ public class MainController {
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		ve.setProperty(Velocity.ENCODING_DEFAULT, "GBK");
+		ve.setProperty(Velocity.INPUT_ENCODING, "GBK");
+		ve.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
 		ve.init();
 
 		Template t = ve.getTemplate(vmName);
@@ -140,6 +144,9 @@ public class MainController {
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		ve.setProperty(Velocity.ENCODING_DEFAULT, "GBK");
+		ve.setProperty(Velocity.INPUT_ENCODING, "GBK");
+		ve.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
 		ve.init();
 
 		Template t = ve.getTemplate(vmName);
