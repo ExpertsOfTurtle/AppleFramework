@@ -18,7 +18,7 @@
 	<!-- 配置数据源 -->
 	<bean id="dataSourceMyBatis" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	    <property name="url" value="jdbc:mysql://www.turtle.com:3306/turtle"/>
+	    <property name="url" value="jdbc:mysql://www.turtle.com:3306/turtle?allowMultiQueries=true"/>
 	    <property name="username" value="mysql"/>
 	    <property name="password" value="mysql"/>
 	    <property name="initialSize" value="10"/>
