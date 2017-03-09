@@ -26,7 +26,7 @@
 	    <property name="maxTotal" value="50"/>
 	    <property name="maxWaitMillis" value="10000"/>
 	    <property name="removeAbandonedOnBorrow" value="true" />
-	    <property name="removeAbandonedTimeout" value="5"/>
+	    <!-- <property name="removeAbandonedTimeout" value="5"/>-->
 	    <!-- 如果数据源的defaultAutoCommit设置为True了，那么方法中如果自己捕获了异常，事务是不会回滚的，如果没有自己捕获异常则事务会回滚 -->
 	    <property name="defaultAutoCommit" value="true"/>
 	</bean>
