@@ -98,9 +98,17 @@ public class MainController {
 				return gotoErrorPage(errorVm, "E00000", e.getMessage());
 			}					
 		}
+		
+		String rs = "";
+		if ("json".equals(apple.getRequestType())) {
+			String vm = "vm/json.vm";
+			rs = gotoPage(vm);
+		} else {
+			String vm = json.getString("response");
+			rs = gotoPage(vm);
+		}
 
-		String vm = json.getString("response");
-		String rs = gotoPage(vm);
+		
 		return rs;
 	}
 	
