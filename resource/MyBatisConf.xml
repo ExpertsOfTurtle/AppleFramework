@@ -34,7 +34,7 @@
 	<!-- 配置mybatis sqlSession工厂 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSourceMyBatis"/>
-		<property name="mapperLocations" value="classpath*:com/frc/*/entity/*.xml"/>
+		<property name="mapperLocations" value="classpath*:com/**/entity/*.xml"/>
 	</bean>
 	
 	<!-- 事务管理 --> 
@@ -51,7 +51,7 @@
 	</tx:advice>
 	
 	<aop:config>
-		<aop:pointcut id="pointcut" expression="execution(* com.frc.*.*(..))" />
+		<aop:pointcut id="pointcut" expression="execution(* com.*.*(..))" />
 		<aop:advisor advice-ref="txAdivce" pointcut-ref="pointcut"/>
 	</aop:config>
 
