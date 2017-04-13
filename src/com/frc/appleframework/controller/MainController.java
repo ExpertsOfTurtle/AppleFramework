@@ -52,6 +52,7 @@ public class MainController {
 		// Using {requestType} from the url to identify different kind of
 		// request
 		String confName = "requesttype" + "/" + domain + "/" + requestType + ".json";
+		System.out.println(confName);
 		byte[] bytes = IOUtil.readBytesFromClasspath(confName);
 		String configString = new String(bytes);
 		JSONObject json = JSONObject.fromObject(configString);
@@ -90,7 +91,7 @@ public class MainController {
 			} catch (Exception e) {
 				logger.error("Generic exception: errorMessage={}", 
 						e.getMessage());
-				
+				e.printStackTrace();
 				String errorVm = json.getString("error");
 				if (errorVm == null || errorVm.trim().length() == 0) {
 					errorVm = DEFAULT_ERROR_VM;
@@ -105,6 +106,12 @@ public class MainController {
 			rs = gotoPage(vm);
 		} else {
 			String vm = json.getString("response");
+			Object obj=AbstractHandler.getRequestData().get("responseVM");
+			if(obj !=null){
+				vm=(String) obj;
+				System.out.println(vm);
+			}
+			System.out.println(vm);
 			rs = gotoPage(vm);
 		}
 
