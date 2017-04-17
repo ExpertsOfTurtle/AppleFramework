@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.frc.appleframework.beans.IRequest;
 import com.frc.appleframework.exception.AppleException;
+import com.frc.appleframework.common.EnvIdentify;
 import com.frc.appleframework.hanlders.AbstractHandler;
 import com.frc.appleframework.util.IOUtil;
 
@@ -63,7 +64,8 @@ public class MainController {
 		// Some handlers that defined with @Service("{name}")
 		List<String> handlerNames = (List<String>) json.get("handlers");
 
-		Map resp = new HashMap<String, String>();
+		Map<String, String> resp = new HashMap<String, String>();
+		Map classMap = new HashMap<String, Class>();
 		Class cl = null;
 		try {
 			cl = Class.forName(requestBeanType);
@@ -71,8 +73,26 @@ public class MainController {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
-		IRequest apple = (IRequest) JSONObject.toBean(JSONObject.fromObject(reqObject), cl);
-
+		JSONObject jsonRequest = JSONObject.fromObject(reqObject);
+		logger.info("JsonRequest:{}", jsonRequest.toString());
+		
+		Object requestBeanMapObj = json.get("requestBeanMap");
+		if (requestBeanMapObj != null) {
+			resp = json.getJSONObject("requestBeanMap");
+			for (Entry<String, String> entry : resp.entrySet()) {
+				String key = entry.getKey();
+				String val = entry.getValue();
+				try {
+					Class clz = Class.forName(val);
+					classMap.put(key, clz);
+				} catch (ClassNotFoundException e) {
+					logger.error(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+		IRequest apple = (IRequest) JSONObject.toBean(jsonRequest, cl, classMap);
+		
 		AbstractHandler.cleanRequestData();
 		
 		for (String handlerName : handlerNames) {
@@ -135,6 +155,13 @@ public class MainController {
 		ve.setProperty(Velocity.ENCODING_DEFAULT, "GBK");
 		ve.setProperty(Velocity.INPUT_ENCODING, "GBK");
 		ve.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
+		
+		boolean isLocal = EnvIdentify.isLocalDebug;
+		if (isLocal && !vmName.endsWith("json.vm")) {
+			String rootPath = "E:\\Workspace\\BankSim\\Bronze\\webapp\\";
+			ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
+			ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, rootPath);
+		}
 		ve.init();
 
 		Template t = ve.getTemplate(vmName);
