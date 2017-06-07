@@ -1,5 +1,12 @@
+#if($requestType == "json")
+{
+	"errorCode":"${errorCode}",
+	"errorMessage":"${errorMessage}"
+}
+#else
 <div>
 	<div>Error occur</div>
 	
 	<h2>${errorMessage} (${errorCode})</h2>
 </div>
+#end

@@ -7,7 +7,7 @@
 	<appender name="root-log" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/logs/root.log" />
 		<param name="append" value="true" />
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
 		</layout>
@@ -16,7 +16,7 @@
 	<appender name="sample-log" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/logs/sample.log" />
 		<param name="append" value="true" />
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
 		</layout>
@@ -25,7 +25,7 @@
 	<appender name="appleFrameworkFile" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/logs/appleFramework.log" />
 		<param name="append" value="true" />
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
 		</layout>
@@ -34,14 +34,14 @@
 	<appender name="chooseOptionFile" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/logs/chooseOption.log" />
 		<param name="append" value="true" />
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
 		</layout>
 	</appender>
 
 	<appender name="sample-log-console" class="org.apache.log4j.ConsoleAppender">
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p %l - %m%n" />
 		</layout>
@@ -50,7 +50,7 @@
 	<appender name="special-log" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/logs/error.log" />
 		<param name="append" value="true" />
-		<param name="encoding" value="GBK" />
+		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p %l - %m%n" />
 		</layout>
@@ -102,11 +102,11 @@
 		<appender-ref ref="root-log" />
 	</category>
 	<category name="org.mybatis.spring" additivity="true">
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="root-log" />
 	</category>
 	<category name="org.apache.ibatis" additivity="true">
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="root-log" />
 	</category>
 	

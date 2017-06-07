@@ -7,4 +7,16 @@ public class StringUtil {
 	public static String getString(String str) {
 		return isEmpty(str) ? "" : str;
 	}
+	public static String left(String str, int n) {
+		if (isEmpty(str) || str.length() < n) {
+			return str;
+		}
+		return str.substring(0, n);
+	}
+	public static String right(String str, int n) {
+		if (isEmpty(str) || str.length() < n) {
+			return str;
+		}
+		return str.substring(str.length() - n);
+	}
 }
